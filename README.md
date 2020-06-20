@@ -1,4 +1,4 @@
-# SIS
+# CIMS
 Campus Information Management System
 
 A complete Campus Information Management System project created with C# ASP .NET
