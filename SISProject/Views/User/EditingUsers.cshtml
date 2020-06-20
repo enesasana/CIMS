@@ -1,0 +1,155 @@
+﻿@using SISProject.Models.SISDB_Data;
+@model Users
+@{
+    ViewBag.Title = "EditingUsers";
+}
+
+<form action="/User/EditingUsers" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Update User Information</h1>
+        </div>
+    </div>
+    
+    <div class="hidden">
+        <div class="form-group">
+            <input type="text" name="id" value="@Model.TableID" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputCitizenNumber">Enter Citizen Number</label>
+            <input type="text" class="form-control" id="inputCN4" name="citnum" value="@Model.u_Citizen_Number">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputCitizenNumber">Enter Login Number</label>
+            <input type="text" class="form-control" id="inputLN4" name="lognum" value="@Model.u_Login_Number">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputName4">Enter Full Name</label>
+            <input type="text" class="form-control" id="inputName4" name="fulName" value="@Model.u_Name">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputPassword4">Password</label>
+            <input type="password" class="form-control" id="inputPassword4" name="password" value="@Model.u_Password">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputEmail4">Enter Email</label>
+            <input type="email" class="form-control" id="inputEmail4" name="email" value="@Model.u_eMail">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputPhoneNumber">Enter Phone Number</label>
+            <input type="text" class="form-control" id="inputPN" name="phnNum" value="@Model.u_Phone_Number">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" name="address" value="@Model.u_Address">
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputTitle">Title</label>
+            <input type="text" class="form-control" id="inputCity" name="title" placeholder="Professor, Assistant or Student">
+        </div>
+        <div class="col-lg-5">
+            <label for="inputGroup">Group</label>
+            <select id="inputGroupID" name="groupID" class="form-control">
+                @{
+                    <option selected>Choose...</option>
+                    SISEntities db = new SISEntities();
+                    foreach (var g in db.Groups.ToList())
+                    {
+                        <option value="@g.TableID">@g.g_Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div id="inputFacultyDIV" class="col-lg-10" hidden>
+            <label for="inputFaculty">Faculty</label>
+            <select id="inputFacultyID" class="form-control">
+                @{
+                    <option selected>Choose...</option>
+                    foreach (var fact in db.Faculties.ToList())
+                    {
+                        <option value="@fact.TableID">@fact.f_Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div id="inputDepartmentDIV" class="col-lg-10" hidden>
+            <label for="inputDepartment">Department</label>
+            <select id="inputDepartmentID" name="depID" class="form-control">
+                <option selected>Choose...</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+                Check me out
+            </label>
+        </div>
+    </div>
+    <div class="row mb-md-2">
+        <button type="submit" class="btn btn-primary">Update Information</button>
+    </div>
+
+</form>
+
+@section Script{
+    <script>
+        $("#inputGroupID").change(function () {
+            switch ($(this).val()) {
+                case "1":
+                    $("#inputFacultyDIV").hide();
+                    $("#inputDepartmentDIV").hide();
+                    break;
+                case "2":
+                    $("#inputFacultyDIV").show();
+                    break;
+                case "3":
+                    $("#inputFacultyDIV").show();
+                    break;
+                default:
+                    $("#inputFacultyDIV").hide();
+                    $("#inputDepartmentDIV").hide();
+                    break;
+            }
+        });
+
+        $("#inputFacultyID").change(function () {
+            $("#inputDepartmentDIV").show();
+            $('#inputDepartmentID').empty();
+            $('#inputDepartmentID').append($('<option>', { value: 0, text: 'Choose Department...' }));
+            var id = $(this).val();
+            $.ajax({
+                url: "/User/GetDepartments/" + id,
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#inputDepartmentID').append($('<option>', { value: data[i].DepID, text: data[i].DepName }));
+                    }
+                }
+            });
+        });
+    </script>
+}
+

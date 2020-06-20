@@ -1,0 +1,37 @@
+﻿@using SISProject.Models.SISDB_Data;
+@model Deparments
+@{
+    ViewBag.Title = "EditingDepartments";
+}
+
+<form action="/Department/EditingDepartments" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Update Department Info</h1>
+        </div>
+    </div>
+
+    <div class="hidden">
+        <div class="form-group">
+            <input type="text" name="id" value="@Model.TableID" />
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="facultyID" value="@Model.d_Faculties_TableID" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="inputDeptName">Enter the Name of Department</label>
+            <input type="text" class="form-control" id="inputDeptName4" name="deptName" value="@Model.d_Name">
+        </div>
+
+        <div class="col-lg-1">
+            <button type="submit" style="margin-top:26px" class="btn btn-primary">Update Department</button>
+        </div>
+    </div>
+
+</form>
+
+

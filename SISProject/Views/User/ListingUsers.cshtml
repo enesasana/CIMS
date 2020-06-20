@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SISProject.Models.SISDB_Data.Users>
+@{
+    ViewBag.Title = "ListingUsers";
+}
+
+<div class="row">
+    <div class="col-lg-10">
+        <h1>Users</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card m-t-20">
+        <div class="card-body">
+            <div class="table">
+                <table class="table table-dark">
+                    <thead class="header">
+                        <tr>
+                            <th scope="col">Citizen Number</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">User Number</th>
+                            <th scope="col">E-Mail</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Faculty</th>
+                            <th scope="col">Registration Date</th>
+                            <th scope="col">Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            if (item.Groups.TableID == 2 || item.Groups.TableID == 3)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(moldeItem => item.u_Citizen_Number)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.u_Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.u_Title)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.u_Login_Number)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.u_eMail)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Deparments.d_Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Deparments.Faculties.f_Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.u_Registration_Date)</td>
+                                    <td><a href="/User/EditingUsers/@item.TableID"><i class="material-icons">create</i></a> <a href="/User/DeletingUsers/@item.TableID"><i class="material-icons">delete_sweep</i></a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer m-t--25" align="right">
+        <a href="/Home/Index"><button type="button" class="btn btn-primary">Back to Previous Page</button></a>
+    </div>
+</div>

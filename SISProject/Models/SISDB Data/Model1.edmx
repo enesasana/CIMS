@@ -1,0 +1,693 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SISModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="c_ECTS" Type="int" />
+          <Property Name="c_Term" Type="nvarchar" MaxLength="50" />
+          <Property Name="c_Departments_TableID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Deparments">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="d_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="d_Faculties_TableID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Faculties">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="f_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="g_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Lecturers&amp;Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lc_Users_TableID" Type="int" Nullable="false" />
+          <Property Name="lc_Courses_TableID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Students&amp;Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sc_Users_TableID" Type="int" Nullable="false" />
+          <Property Name="sc_Courses_TableID" Type="int" Nullable="false" />
+          <Property Name="sc_Midterm_Grade" Type="int" />
+          <Property Name="sc_Final_Grade" Type="int" />
+          <Property Name="sc_Resit_Grade" Type="int" />
+          <Property Name="sc_Grade" Type="float" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="u_Citizen_Number" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="u_Login_Number" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_eMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_Phone_Number" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_Address" Type="nvarchar(max)" />
+          <Property Name="u_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="u_Registration_Date" Type="date" />
+          <Property Name="u_Groups_TableID" Type="int" Nullable="false" />
+          <Property Name="u_Departments_TableID" Type="int" Nullable="false" />
+          <Property Name="u_Picture" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Courses_Deparments">
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deparments">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Courses">
+              <PropertyRef Name="c_Departments_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Deparments_Faculties">
+          <End Role="Faculties" Type="Self.Faculties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculties">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Deparments">
+              <PropertyRef Name="d_Faculties_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecturers&amp;Courses_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Lecturers&amp;Courses" Type="Self.Lecturers&amp;Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Lecturers&amp;Courses">
+              <PropertyRef Name="lc_Courses_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecturers&amp;Courses_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lecturers&amp;Courses" Type="Self.Lecturers&amp;Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Lecturers&amp;Courses">
+              <PropertyRef Name="lc_Users_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students&amp;Courses_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Students&amp;Courses" Type="Self.Students&amp;Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Students&amp;Courses">
+              <PropertyRef Name="sc_Courses_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students&amp;Courses_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students&amp;Courses" Type="Self.Students&amp;Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Students&amp;Courses">
+              <PropertyRef Name="sc_Users_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Deparments">
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deparments">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="u_Departments_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="u_Groups_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="SISModelStoreContainer">
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deparments" EntityType="Self.Deparments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Faculties" EntityType="Self.Faculties" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lecturers&amp;Courses" EntityType="Self.Lecturers&amp;Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students&amp;Courses" EntityType="Self.Students&amp;Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Courses_Deparments" Association="Self.FK_Courses_Deparments">
+            <End Role="Deparments" EntitySet="Deparments" />
+            <End Role="Courses" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Deparments_Faculties" Association="Self.FK_Deparments_Faculties">
+            <End Role="Faculties" EntitySet="Faculties" />
+            <End Role="Deparments" EntitySet="Deparments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecturers&amp;Courses_Courses" Association="Self.FK_Lecturers&amp;Courses_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Lecturers&amp;Courses" EntitySet="Lecturers&amp;Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecturers&amp;Courses_Users" Association="Self.FK_Lecturers&amp;Courses_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Lecturers&amp;Courses" EntitySet="Lecturers&amp;Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students&amp;Courses_Courses" Association="Self.FK_Students&amp;Courses_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Students&amp;Courses" EntitySet="Students&amp;Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students&amp;Courses_Users" Association="Self.FK_Students&amp;Courses_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students&amp;Courses" EntitySet="Students&amp;Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Deparments" Association="Self.FK_Users_Deparments">
+            <End Role="Deparments" EntitySet="Deparments" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Groups" Association="Self.FK_Users_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SISModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="c_ECTS" Type="Int32" />
+          <Property Name="c_Term" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="c_Departments_TableID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Deparments" Relationship="Self.FK_Courses_Deparments" FromRole="Courses" ToRole="Deparments" />
+          <NavigationProperty Name="Lecturers_Courses" Relationship="Self.FK_Lecturers_Courses_Courses" FromRole="Courses" ToRole="Lecturers_Courses" />
+          <NavigationProperty Name="Students_Courses" Relationship="Self.FK_Students_Courses_Courses" FromRole="Courses" ToRole="Students_Courses" />
+        </EntityType>
+        <EntityType Name="Deparments">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="d_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="d_Faculties_TableID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Courses_Deparments" FromRole="Deparments" ToRole="Courses" />
+          <NavigationProperty Name="Faculties" Relationship="Self.FK_Deparments_Faculties" FromRole="Deparments" ToRole="Faculties" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Deparments" FromRole="Deparments" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Faculties">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="f_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Deparments" Relationship="Self.FK_Deparments_Faculties" FromRole="Faculties" ToRole="Deparments" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="g_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Groups" FromRole="Groups" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Lecturers_Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lc_Users_TableID" Type="Int32" Nullable="false" />
+          <Property Name="lc_Courses_TableID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Lecturers_Courses_Courses" FromRole="Lecturers_Courses" ToRole="Courses" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Lecturers_Courses_Users" FromRole="Lecturers_Courses" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Students_Courses">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sc_Users_TableID" Type="Int32" Nullable="false" />
+          <Property Name="sc_Courses_TableID" Type="Int32" Nullable="false" />
+          <Property Name="sc_Midterm_Grade" Type="Int32" />
+          <Property Name="sc_Final_Grade" Type="Int32" />
+          <Property Name="sc_Resit_Grade" Type="Int32" />
+          <Property Name="sc_Grade" Type="Double" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Students_Courses_Courses" FromRole="Students_Courses" ToRole="Courses" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Students_Courses_Users" FromRole="Students_Courses" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="u_Citizen_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="u_Login_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_eMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_Phone_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="u_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="u_Registration_Date" Type="DateTime" Precision="0" />
+          <Property Name="u_Groups_TableID" Type="Int32" Nullable="false" />
+          <Property Name="u_Departments_TableID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Deparments" Relationship="Self.FK_Users_Deparments" FromRole="Users" ToRole="Deparments" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK_Users_Groups" FromRole="Users" ToRole="Groups" />
+          <NavigationProperty Name="Lecturers_Courses" Relationship="Self.FK_Lecturers_Courses_Users" FromRole="Users" ToRole="Lecturers_Courses" />
+          <NavigationProperty Name="Students_Courses" Relationship="Self.FK_Students_Courses_Users" FromRole="Users" ToRole="Students_Courses" />
+          <Property Name="u_Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Courses_Deparments">
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deparments">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Courses">
+              <PropertyRef Name="c_Departments_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecturers_Courses_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Lecturers_Courses" Type="Self.Lecturers_Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Lecturers_Courses">
+              <PropertyRef Name="lc_Courses_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students_Courses_Courses">
+          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Students_Courses" Type="Self.Students_Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courses">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Students_Courses">
+              <PropertyRef Name="sc_Courses_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Deparments_Faculties">
+          <End Role="Faculties" Type="Self.Faculties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculties">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Deparments">
+              <PropertyRef Name="d_Faculties_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Deparments">
+          <End Role="Deparments" Type="Self.Deparments" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Deparments">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="u_Departments_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="u_Groups_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecturers_Courses_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lecturers_Courses" Type="Self.Lecturers_Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Lecturers_Courses">
+              <PropertyRef Name="lc_Users_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students_Courses_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students_Courses" Type="Self.Students_Courses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="Students_Courses">
+              <PropertyRef Name="sc_Users_TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SISEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Courses" />
+          <EntitySet Name="Deparments" EntityType="Self.Deparments" />
+          <EntitySet Name="Faculties" EntityType="Self.Faculties" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" />
+          <EntitySet Name="Lecturers_Courses" EntityType="Self.Lecturers_Courses" />
+          <EntitySet Name="Students_Courses" EntityType="Self.Students_Courses" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Courses_Deparments" Association="Self.FK_Courses_Deparments">
+            <End Role="Deparments" EntitySet="Deparments" />
+            <End Role="Courses" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecturers_Courses_Courses" Association="Self.FK_Lecturers_Courses_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Lecturers_Courses" EntitySet="Lecturers_Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students_Courses_Courses" Association="Self.FK_Students_Courses_Courses">
+            <End Role="Courses" EntitySet="Courses" />
+            <End Role="Students_Courses" EntitySet="Students_Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Deparments_Faculties" Association="Self.FK_Deparments_Faculties">
+            <End Role="Faculties" EntitySet="Faculties" />
+            <End Role="Deparments" EntitySet="Deparments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Deparments" Association="Self.FK_Users_Deparments">
+            <End Role="Deparments" EntitySet="Deparments" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Groups" Association="Self.FK_Users_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecturers_Courses_Users" Association="Self.FK_Lecturers_Courses_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Lecturers_Courses" EntitySet="Lecturers_Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students_Courses_Users" Association="Self.FK_Students_Courses_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students_Courses" EntitySet="Students_Courses" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SISModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SISModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SISModelStoreContainer" CdmEntityContainer="SISEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="SISModel.Courses">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="c_Name" ColumnName="c_Name" />
+                <ScalarProperty Name="c_ECTS" ColumnName="c_ECTS" />
+                <ScalarProperty Name="c_Term" ColumnName="c_Term" />
+                <ScalarProperty Name="c_Departments_TableID" ColumnName="c_Departments_TableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deparments">
+            <EntityTypeMapping TypeName="SISModel.Deparments">
+              <MappingFragment StoreEntitySet="Deparments">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="d_Name" ColumnName="d_Name" />
+                <ScalarProperty Name="d_Faculties_TableID" ColumnName="d_Faculties_TableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Faculties">
+            <EntityTypeMapping TypeName="SISModel.Faculties">
+              <MappingFragment StoreEntitySet="Faculties">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="f_Name" ColumnName="f_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="SISModel.Groups">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="g_Name" ColumnName="g_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lecturers_Courses">
+            <EntityTypeMapping TypeName="SISModel.Lecturers_Courses">
+              <MappingFragment StoreEntitySet="Lecturers&amp;Courses">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="lc_Users_TableID" ColumnName="lc_Users_TableID" />
+                <ScalarProperty Name="lc_Courses_TableID" ColumnName="lc_Courses_TableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students_Courses">
+            <EntityTypeMapping TypeName="SISModel.Students_Courses">
+              <MappingFragment StoreEntitySet="Students&amp;Courses">
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="sc_Users_TableID" ColumnName="sc_Users_TableID" />
+                <ScalarProperty Name="sc_Courses_TableID" ColumnName="sc_Courses_TableID" />
+                <ScalarProperty Name="sc_Midterm_Grade" ColumnName="sc_Midterm_Grade" />
+                <ScalarProperty Name="sc_Final_Grade" ColumnName="sc_Final_Grade" />
+                <ScalarProperty Name="sc_Resit_Grade" ColumnName="sc_Resit_Grade" />
+                <ScalarProperty Name="sc_Grade" ColumnName="sc_Grade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SISModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SISModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="u_Picture" ColumnName="u_Picture" />
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="u_Citizen_Number" ColumnName="u_Citizen_Number" />
+                <ScalarProperty Name="u_Login_Number" ColumnName="u_Login_Number" />
+                <ScalarProperty Name="u_Name" ColumnName="u_Name" />
+                <ScalarProperty Name="u_Password" ColumnName="u_Password" />
+                <ScalarProperty Name="u_eMail" ColumnName="u_eMail" />
+                <ScalarProperty Name="u_Phone_Number" ColumnName="u_Phone_Number" />
+                <ScalarProperty Name="u_Address" ColumnName="u_Address" />
+                <ScalarProperty Name="u_Title" ColumnName="u_Title" />
+                <ScalarProperty Name="u_Registration_Date" ColumnName="u_Registration_Date" />
+                <ScalarProperty Name="u_Groups_TableID" ColumnName="u_Groups_TableID" />
+                <ScalarProperty Name="u_Departments_TableID" ColumnName="u_Departments_TableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SISModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SISModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SISModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SISModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SISModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SISModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SISModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SISModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SISModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

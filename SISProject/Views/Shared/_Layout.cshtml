@@ -1,0 +1,412 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title> ARD - CIMS </title>
+    <!-- Favicon-->
+    <link rel="icon" href="/AdminDesign/ardgruptitle.png" type="image/x-icon">-->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Core Css -->
+    <link href="/AdminDesign/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Waves Effect Css -->
+    <link href="/AdminDesign/plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="/AdminDesign/plugins/animate-css/animate.css" rel="stylesheet" />
+    <!-- Morris Chart Css-->
+    <link href="/AdminDesign/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="/AdminDesign/css/style.css" rel="stylesheet">
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="/AdminDesign/css/themes/all-themes.css" rel="stylesheet" />
+</head>
+<body class="theme-light-green">
+
+    @{
+        var pp = ((Users)Session["LoggedUser"]).u_Picture;
+        var user = (Users)Session["LoggedUser"];
+        var name = ((Users)Session["LoggedUser"]).u_Name;
+        var email = ((Users)Session["LoggedUser"]).u_eMail;
+
+        switch (user.u_Groups_TableID)
+        {
+            case 1: //Admin
+                <!-- Top Bar -->
+                <nav class="navbar">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                            <a href="javascript:void(0);" class="bars"></a>
+                            <div class="image">
+                                <img src="/AdminDesign/images/ardgrup.png" width="45" height="50" alt="User" />
+                                <font color="#181d69" size="3"><b><big> Campus Information Management System </big></b></font>
+                            </div>
+
+                        </div>
+                        <div class="collapse navbar-collapse" id="navbar-collapse">
+
+                        </div>
+                    </div>
+                </nav>
+                <!-- #Top Bar -->
+
+                <section>
+                    <!-- Left Sidebar -->
+                    <aside id="leftsidebar" class="sidebar">
+                        <!-- User Info -->
+                        <div class="user-info">
+                            <div class="image">
+                                <img class="box-shadow" src="~/images/pp/@pp" width="40" height="50" alt="User" />
+                            </div>
+                            <div class="info-container">
+                                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@name </div>
+                                <div class="email">@email </div>
+                                <div class="btn-group user-helper-dropdown">
+                                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Login/Index"><i class="material-icons">input</i>Sign Out</a></li>
+                                        <li role="separator" class="divider"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #User Info -->
+                        <!-- Menu -->
+                        <div class="menu">
+                            <ul class="list">
+                                <li class="header">MAIN MENU</li>
+                                <li class="active">
+                                    <a class="toggled waves-effect  waves-block" href="/Home/Index">
+                                        <i class="material-icons">home</i>
+                                        <span>Home Page</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">person</i>
+                                        <span>User Actions (UA)</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a class="toggled waves-effect  waves-block" href="/User/AddNewUser">Add New User</a>
+                                        </li>
+                                        <li>
+                                            <a class="toggled waves-effect  waves-block" href="/User/ListingUsers">List of Users</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">card_travel</i>
+                                        <span>Course Actions</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a href="/Course/OpenNewCourse">Open New Course</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Course/ListingCourses">List of Courses</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Course/AssigningCourse">Assigning Courses to Lecturers</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">school</i>
+                                        <span>Department Actions</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a href="/Department/AddNewDepartment">Add New Department</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Department/ListingDepartments">List of Departments</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">domain</i>
+                                        <span>Faculty Actions</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a href="/Faculty/AddNewFaculty">Add New Faculty</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Faculty/ListingFaculties">List of Faculties</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- #Menu -->
+                        <!-- Footer -->
+                        <div class="legal">
+                            <div class="copyright">
+                                &copy; 2018 <a> ARD Group - Enes Asana</a>
+                            </div>
+                            <div class="version">
+                                <b>Version: </b> 1.0
+                            </div>
+                        </div>
+                        <!-- #Footer -->
+                    </aside>
+                    <!-- #END# Left Sidebar -->
+                    <!-- Top Sidebar -->
+                    <!-- #END# Top Sidebar -->
+
+                </section>
+                break;
+
+            case 2: //Lecturer
+
+                <!-- Top Bar -->
+                <nav class="navbar">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                            <a href="javascript:void(0);" class="bars"></a>
+                            <div class="image">
+                                <img src="/AdminDesign/images/ardgrup.png" width="45" height="50" alt="User" />
+                                <font color="#181d69" size="3"><b><big> Campus Information Management System </big></b></font>
+                            </div>
+
+                        </div>
+                        <div class="collapse navbar-collapse" id="navbar-collapse">
+
+                        </div>
+                    </div>
+                </nav>
+                <!-- #Top Bar -->
+
+                <section>
+                    <!-- Left Sidebar -->
+                    <aside id="leftsidebar" class="sidebar">
+                        <!-- User Info -->
+                        <div class="user-info">
+                            <div class="image">
+                                <img class="box-shadow" src="~/images/pp/@pp" width="60" height="60" alt="User" />
+                            </div>
+                            <div class="info-container">
+                                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> @name </div>
+                                <div class="email">@email </div>
+                                <div class="btn-group user-helper-dropdown">
+                                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Login/Index"><i class="material-icons">input</i>Sign Out</a></li>
+                                        <li role="separator" class="divider"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #User Info -->
+                        <!-- Menu -->
+                        <div class="menu">
+                            <ul class="list">
+                                <li class="header">MAIN MENU</li>
+                                <li class="active">
+                                    <a class="toggled waves-effect  waves-block" href="/Home/Index">
+                                        <i class="material-icons">home</i>
+                                        <span>Home Page</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">card_travel</i>
+                                        <span>Course Actions</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a class="toggled waves-effect  waves-block" href="/Course/GradeEntry">Grade Entry</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- #Menu -->
+                        <!-- Footer -->
+                        <div class="legal">
+                            <div class="copyright">
+                                &copy; 2018 <a> ARD Group - Enes Asana</a>
+                            </div>
+                            <div class="version">
+                                <b>Version: </b> 1.0
+                            </div>
+                        </div>
+                        <!-- #Footer -->
+                    </aside>
+                    <!-- #END# Left Sidebar -->
+                    <!-- Top Sidebar -->
+                    <!-- #END# Top Sidebar -->
+
+                </section>
+
+                break;
+
+            case 3: //Student
+
+                <!-- Top Bar -->
+                <nav class="navbar">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                            <a href="javascript:void(0);" class="bars"></a>
+                            <div class="image">
+                                <img src="/AdminDesign/images/ardgrup.png" width="45" height="50" alt="User" />
+                                <font color="#181d69" size="3"><b><big> Campus Information Management System </big></b></font>
+                            </div>
+
+                        </div>
+                        <div class="collapse navbar-collapse" id="navbar-collapse">
+
+                        </div>
+                    </div>
+                </nav>
+                <!-- #Top Bar -->
+
+                <section>
+                    <!-- Left Sidebar -->
+                    <aside id="leftsidebar" class="sidebar">
+                        <!-- User Info -->
+                        <div class="user-info">
+                            <div class="image">
+                                <img class="box-shadow" src="~/images/pp/@pp" width="40" height="50" alt="User" />
+                            </div>
+                            <div class="info-container">
+                                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@name </div>
+                                <div class="email">@email </div>
+                                <div class="btn-group user-helper-dropdown">
+                                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Login/Index"><i class="material-icons">input</i>Sign Out</a></li>
+                                        <li role="separator" class="divider"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #User Info -->
+                        <!-- Menu -->
+                        <div class="menu">
+                            <ul class="list">
+                                <li class="header">MAIN MENU</li>
+                                <li class="active">
+                                    <a class="toggled waves-effect  waves-block" href="/Home/Index">
+                                        <i class="material-icons">home</i>
+                                        <span>Home Page</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">card_travel</i>
+                                        <span>Course Actions</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a class="toggled waves-effect  waves-block" href="/Course/CourseSelection">Course Selection</a>
+                                        </li>
+                                        <li>
+                                            <a class="toggled waves-effect  waves-block" href="/Course/CourseGrades">Course Grades</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- #Menu -->
+                        <!-- Footer -->
+                        <div class="legal">
+                            <div class="copyright">
+                                &copy; 2018 <a> ARD Group - Enes Asana</a>
+                            </div>
+                            <div class="version">
+                                <b>Version: </b> 1.0
+                            </div>
+                        </div>
+                        <!-- #Footer -->
+                    </aside>
+                    <!-- #END# Left Sidebar -->
+                    <!-- Top Sidebar -->
+                    <!-- #END# Top Sidebar -->
+
+                </section>
+
+                break;
+
+        }
+    }
+
+    <section class="content">
+        <div class="container-fluid">
+
+            @RenderBody()
+
+        </div>
+    </section>
+
+    <!-- Jquery Core Js -->
+    <script src="/AdminDesign/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core Js -->
+    <script src="/AdminDesign/plugins/bootstrap/js/bootstrap.js"></script>
+    <!-- Select Plugin Js -->
+    <script src="/AdminDesign/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <!-- Slimscroll Plugin Js -->
+    <script src="/AdminDesign/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Waves Effect Plugin Js -->
+    <script src="/AdminDesign/plugins/node-waves/waves.js"></script>
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="/AdminDesign/plugins/jquery-countto/jquery.countTo.js"></script>
+    <!-- Morris Plugin Js -->
+    <script src="/AdminDesign/plugins/raphael/raphael.min.js"></script>
+    <script src="/AdminDesign/plugins/morrisjs/morris.js"></script>
+    <!-- ChartJs -->
+    <script src="/AdminDesign/plugins/chartjs/Chart.bundle.js"></script>
+    <!-- Flot Charts Plugin Js -->
+    <script src="/AdminDesign/plugins/flot-charts/jquery.flot.js"></script>
+    <script src="/AdminDesign/plugins/flot-charts/jquery.flot.resize.js"></script>
+    <script src="/AdminDesign/plugins/flot-charts/jquery.flot.pie.js"></script>
+    <script src="/AdminDesign/plugins/flot-charts/jquery.flot.categories.js"></script>
+    <script src="/AdminDesign/plugins/flot-charts/jquery.flot.time.js"></script>
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="/AdminDesign/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+    <script>
+        $.each($('.menu-toggle.toggled'), function (i, val) {
+            $(val).next().slideToggle(0);
+        });
+
+        $('.menu-toggle').on('click', function (e) {
+            var $this = $(this);
+            var $content = $this.next();
+
+            if ($($this.parents('ul')[0]).hasClass('list')) {
+                var $not = $(e.target).hasClass('menu-toggle') ? e.target : $(e.target).parents('.menu-toggle');
+
+                $.each($('.menu-toggle.toggled').not($not).next(), function (i, val) {
+                    if ($(val).is(':visible')) {
+                        $(val).prev().toggleClass('toggled');
+                        $(val).slideUp();
+                    }
+                });
+            }
+
+            $this.toggleClass('toggled');
+            $content.slideToggle(320);
+        });
+    </script>
+
+    @RenderSection("Script", false)
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "GradeEntry";
+}
+@model List<Lecturers_Courses>
+
+<form action="/Course/GradeEntry1" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Grade Entry</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <label for="inputCourses">Given Courses</label>
+            <select id="inputCoursesID" name="courseID" class="form-control">
+                @{
+                    <option selected>Choose a Course</option>
+                    var depID = ((Users)Session["LoggedUser"]).u_Departments_TableID;
+                    var userID = ((Users)Session["LoggedUser"]).TableID;
+                    SISEntities db = new SISEntities();
+                    foreach (var course in db.Courses.Where(r => r.c_Departments_TableID == depID).OrderBy(r => r.c_Name).ToList())
+                    {
+                        if (db.Lecturers_Courses.Where(r => r.lc_Users_TableID == userID && r.lc_Courses_TableID == course.TableID).Any())
+                        {
+                            <option value="@course.TableID">@course.c_Name</option>
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="card-footer m-t-10" align="left">
+            <button type="submit" class="btn btn-danger">Next</button>
+    </div>
+
+</form>

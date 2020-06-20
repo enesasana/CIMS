@@ -1,0 +1,40 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "AddNewDepartment";
+}
+
+<form action="/Department/AddNewDepartment" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Adding New Department</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputFaculties">Faculties</label>
+            <select id="inputFacultyID" name="facultyID" class="form-control">
+                @{
+
+                    <option selected>Choose a Faculty</option>
+                    SISEntities db = new SISEntities();
+                    foreach (var dept in db.Faculties.ToList())
+                    {
+                        <option value="@dept.TableID">@dept.f_Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="inputDeptName">Enter the Name of Department</label>
+            <input required type="text" class="form-control" id="inputDeptName4" name="deptName" placeholder="Department Name">
+        </div>
+
+        <div class="card-footer m-t-10" style="margin-top:27px">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+

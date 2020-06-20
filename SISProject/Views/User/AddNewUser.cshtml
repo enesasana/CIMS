@@ -1,0 +1,154 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "AddNewUser";
+}
+@model SISProject.Models.SISDB_Data.Users
+
+<form action="/User/AddNewUser" method="post"enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Adding New User</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputCitizenNumber">Enter Citizen Number</label>
+            <input required type="text" class="form-control" id="inputCN4" name="citnum" placeholder="Citizen Number">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputCitizenNumber">Enter Login Number</label>
+            <input required type="text" class="form-control" id="inputLN4" name="lognum" placeholder="Login Number">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputName4">Enter Full Name</label>
+            <input required type="text" class="form-control" id="inputName4" name="fulName" placeholder="Full Name">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputPassword4">Password</label>
+            <input required type="password" class="form-control" id="inputPassword4" name="password" placeholder="Password">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputEmail4">Enter Email</label>
+            <input required type="email" class="form-control" id="inputEmail4" name="email" placeholder="someone@example.com">
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputPhoneNumber">Enter Phone Number</label>
+            <input required type="text" class="form-control" id="inputPN" name="phnNum" placeholder="0XXX-XXX-XXXX">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputAddress">Address</label>
+            <input required type="text" class="form-control" id="inputAddress" name="address" placeholder="1234 Main St">
+        </div>
+
+        <div class="col-lg-5" style="margin-top:5px; margin-left: -15px;">
+            @Html.LabelFor(model => model.u_Picture, "Picture", new { @class = "control-label col-md-2" })
+            <br />
+                <input type="file" name="uploadImages" class="input-files"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputTitle">Title</label>
+            <input required type="text" class="form-control" id="inputCity" name="title" placeholder="Professor, Assistant or Student">
+        </div>
+        <div class="col-lg-5">
+            <label for="inputGroup">Group</label>
+            <select id="inputGroupID" name="groupID" class="form-control">
+                @{
+                    <option selected>Choose...</option>
+                    SISEntities db = new SISEntities();
+                    foreach (var g in db.Groups.ToList())
+                    {
+                        <option value="@g.TableID">@g.g_Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div id="inputFacultyDIV" class="col-lg-10" hidden>
+            <label for="inputFaculty">Faculty</label>
+            <select id="inputFacultyID" class="form-control">
+                @{
+                    <option selected>Choose...</option>
+                    foreach (var fact in db.Faculties.ToList())
+                    {
+                        <option value="@fact.TableID">@fact.f_Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div id="inputDepartmentDIV" class="col-lg-10" hidden>
+            <label for="inputDepartment">Department</label>
+            <select id="inputDepartmentID" name="depID" class="form-control">
+                <option selected>Choose...</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+                Check me out
+            </label>
+        </div>
+    </div>
+
+    <div class="card-footer m-t-10" align="left">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</form>
+
+@section Script{
+    <script>
+        $("#inputGroupID").change(function () {
+            switch ($(this).val()) {
+                case "1":
+                    $("#inputFacultyDIV").hide();
+                    $("#inputDepartmentDIV").hide();
+                    break;
+                case "2":
+                    $("#inputFacultyDIV").show();
+                    break;
+                case "3":
+                    $("#inputFacultyDIV").show();
+                    break;
+                default:
+                    $("#inputFacultyDIV").hide();
+                    $("#inputDepartmentDIV").hide();
+                    break;
+            }
+        });
+
+        $("#inputFacultyID").change(function () {
+            $("#inputDepartmentDIV").show();
+            $('#inputDepartmentID').empty();
+            $('#inputDepartmentID').append($('<option>', { value: 0, text: 'Choose Department...' }));
+            var id = $(this).val();
+            $.ajax({
+                url: "/User/GetDepartments/" + id,
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#inputDepartmentID').append($('<option>', { value: data[i].DepID, text: data[i].DepName }));
+                    }
+                }
+            });
+        });
+    </script>
+}

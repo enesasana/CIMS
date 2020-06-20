@@ -1,0 +1,75 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "CourseSelection";
+}
+@model List<Students_Courses>
+
+<form action="/Course/CourseSelection" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Course Selection</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <label for="inputCourses">Courses</label>
+            <select id="inputCoursesID" name="courseID" class="form-control">
+                @{
+                    <option selected>Choose a Course</option>
+                    var depID = ((Users)Session["LoggedUser"]).u_Departments_TableID;
+                    var userID = ((Users)Session["LoggedUser"]).TableID;
+                    SISEntities db = new SISEntities();
+                    foreach (var course in db.Courses.Where(r => r.c_Departments_TableID == depID).OrderBy(r => r.c_Term).ToList())
+                    {
+                        if (db.Students_Courses.Where(r => r.sc_Users_TableID == userID && r.sc_Courses_TableID == course.TableID).Any())
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            <option value="@course.TableID">@course.c_Term - @course.c_ECTS ECTS => @course.c_Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="card-footer m-t-10" align="left">
+        <button type="submit" class="btn btn-warning">Submit</button>
+    </div>
+
+    <div class="card m-t-20">
+        <div class="card-body">
+            <div class="table" id="faculty">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Course Name</th>
+                            <th scope="col">Course Term</th>
+                            <th scope="col">Course ECTS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="course_tbody">
+                        @{
+                            foreach (var std_course in Model)
+                            {
+                                if (db.Courses.Where(r => r.TableID == std_course.sc_Courses_TableID).Any())
+                                {
+                                    var course_info = db.Courses.Where(r => r.TableID == std_course.sc_Courses_TableID).FirstOrDefault();
+                                    <tr>
+                                        <td>@course_info.c_Name</td>
+                                        <td>@course_info.c_Term</td>
+                                        <td>@course_info.c_ECTS</td>
+                                    </tr>
+                                }
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

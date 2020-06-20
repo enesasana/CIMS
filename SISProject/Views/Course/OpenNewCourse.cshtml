@@ -1,0 +1,76 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "OpenNewCourse";
+}
+
+<form action="/Course/OpenNewCourse" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Opening New Course</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <label for="inputFaculties">Faculties</label>
+            <select id="inputFacultyID" name="facultyID" class="form-control">
+                @{
+                    <option selected>Choose a Faculty</option>
+                    SISEntities db = new SISEntities();
+                    foreach (var fact in db.Faculties.ToList())
+                    {
+                        <option value="@fact.TableID">@fact.f_Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-lg-5">
+            <label for="inputDepartments">Departments</label>
+            <select id="inputDepartmentsID" name="deptID" class="form-control">
+                <option selected>Choose a Department</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <label for="inputCourseName">Enter the Name of Course</label>
+            <input required type="text" class="form-control" id="inputCourseName4" name="courseName" placeholder="Course Name">
+        </div>
+
+        <div class="col-lg-3">
+            <label for="inputCourseECTS">Enter the ECTS of the Course</label>
+            <input required type="text" class="form-control" id="inputEcts4" name="courseEcts" placeholder="3,4,5">
+        </div>
+
+        <div class="col-lg-3">
+            <label for="inputCourseTerm">Enter the Term of the Course</label>
+            <input required type="text" class="form-control" id="inputTerm4" name="courseTerm" placeholder="Fall/Spring">
+        </div>
+    </div>
+
+    <div class="card-footer m-t-10" align="left">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@section Script{
+<script>
+    $("#inputFacultyID").change(function () {
+        $('#inputDepartmentsID').empty();
+        $('#inputDepartmentsID').append($('<option>', { value: 0, text: 'Choose a Department to open any Course' }));
+        var id = $(this).val();
+        $.ajax({
+            url: "/User/GetDepartments/" + id,
+            dataType: "json",
+            type: "post",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#inputDepartmentsID').append($('<option>', { value: data[i].DepID, text: data[i].DepName }));
+                }
+            }
+        });
+    });
+</script>
+}

@@ -1,0 +1,66 @@
+﻿@using SISProject.Models.SISDB_Data;
+@model IEnumerable<SISProject.Models.SISDB_Data.Deparments>
+
+@{
+    ViewBag.Title = "ListingDepartments";
+}
+
+<div class="row">
+    <div class="col-lg-10">
+        <h1>Deparments</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-5">
+        <label for="inputFaculties">Faculties</label>
+        <select id="inputFacultyID" name="facultyID" class="form-control">
+            @{
+                <option selected>Choose a Faculty to list related Departments</option>
+                SISEntities db = new SISEntities();
+                foreach (var fact in db.Faculties.ToList())
+                {
+                    <option value="@fact.TableID">@fact.f_Name</option>
+                }
+            }
+        </select>
+    </div>  
+</div>
+
+<div class="card m-t-20">
+    <div class="card-body">
+        <div class="table" id="faculty">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Departments</th>
+                        <th scope="colgroup">Operations</th>
+                    </tr>
+                </thead>
+                <tbody id="dep_tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer m-t--10" align="right">
+        <a href="/Home/Index"><button type="button" class="btn btn-primary">Back to Previous Page</button></a>
+    </div>
+</div>
+
+@section Script{
+<script>
+    $("#inputFacultyID").change(function () {
+        $("#dep_tbody").empty();       
+        var id = $(this).val();
+        $.ajax({
+            url: "/User/GetDepartments/" + id,
+            dataType: "json",
+            type: "post",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#dep_tbody').append("<tr><td DepID='" + data[i].DepID + "'>" + data[i].DepName + "<td><a href='/Department/DeletingDepartments/" + data[i].DepID + "' > <i class='material-icons'>delete_sweep</i></a ><a href='/Department/EditingDepartments/" + data[i].DepID + "'><i class='material-icons'>create</i></a></td></tr>");
+                }
+            }
+        });
+    });    
+</script>    
+}

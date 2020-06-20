@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8be7cd53bc0d444799367b20cc041f0c" Name="Diagram1">
+        <EntityTypeShape EntityType="SISModel.Courses" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Deparments" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Faculties" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Groups" Width="1.5" PointX="6" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Lecturers_Courses" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Students_Courses" Width="1.5" PointX="10.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SISModel.Users" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="SISModel.FK_Courses_Deparments" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Lecturers_Courses_Courses" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Students_Courses_Courses" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Deparments_Faculties" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Users_Deparments" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Users_Groups" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Lecturers_Courses_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="SISModel.FK_Students_Courses_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

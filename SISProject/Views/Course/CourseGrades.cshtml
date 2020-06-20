@@ -1,0 +1,54 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "CourseGrades";
+}
+@model List<Students_Courses>
+
+<div class="row">
+    <div class="col-lg-10">
+        <h1>Course Grades</h1>
+    </div>
+</div>
+
+<div class="card m-t-20">
+    <div class="card-body">
+        <div class="table" id="faculty">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Course Term</th>
+                        <th scope="col">Course ECTS</th>
+                        <th scope="col">Midterm</th>
+                        <th scope="col">Final</th>
+                        <th scope="col">Resit</th>
+                        <th scope="col">Average</th>
+                    </tr>
+                </thead>
+                <tbody id="course_tbody">
+                    @{
+                        SISEntities db = new SISEntities();
+
+                        foreach (var std_course in Model)
+                        {
+                            if (db.Courses.Where(r => r.TableID == std_course.sc_Courses_TableID).Any())
+                            {
+                                var course_info = db.Courses.Where(r => r.TableID == std_course.sc_Courses_TableID).FirstOrDefault();
+                                <tr>
+                                    <td>@course_info.c_Name</td>
+                                    <td>@course_info.c_Term</td>
+                                    <td>@course_info.c_ECTS</td>
+                                    <td>@std_course.sc_Midterm_Grade</td>
+                                    <td>@std_course.sc_Final_Grade</td>
+                                    <td>@std_course.sc_Resit_Grade</td>
+                                    <td>@std_course.sc_Grade</td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

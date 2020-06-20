@@ -1,0 +1,32 @@
+﻿@using SISProject.Models.SISDB_Data;
+@model Faculties
+@{
+    ViewBag.Title = "EditingFaculties";
+}
+
+<form action="/Faculty/EditingFaculties" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Update Faculty Info</h1>
+        </div>
+    </div>
+
+    <div class="hidden">
+        <div class="form-group">
+            <input type="text" name="id" value="@Model.TableID" />
+        </div>
+    </div>
+
+    <label for="inputCitizenNumber">Enter the Name of Faculty </label>
+    <div class="row">
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="inputFacultyName4" name="facultyName" value="@Model.f_Name">
+        </div>
+
+        <div class="row mb-md-2">
+            <button type="submit" class="btn btn-primary">Update Faculty</button>
+        </div>
+    </div>
+</form>
+
+

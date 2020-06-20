@@ -1,0 +1,24 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "AddNewFaculty";
+}
+
+<form action="/Faculty/AddNewFaculty" method="post">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>Adding New Faculty</h1>
+        </div>
+    </div>
+
+    <label for="inputCitizenNumber">Enter the Name of Faculty </label>
+    <div class="row">
+        <div class="col-lg-8">
+            <input required type="text" class="form-control" id="inputFacultyName4" name="facultyName" placeholder="Faculty Name">
+        </div>
+
+        <div class="row mb-md-2">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>    
+</form>
+

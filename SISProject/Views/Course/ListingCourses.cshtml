@@ -1,0 +1,71 @@
+﻿@using SISProject.Models.SISDB_Data;
+@model IEnumerable<SISProject.Models.SISDB_Data.Courses>
+@{
+    ViewBag.Title = "ListingCourses";
+}
+
+<div class="row">
+    <div class="col-lg-10">
+        <h1>Courses</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div id="inputFacultyDIV" class="col-lg-6">
+        <label for="inputFaculties">Faculties</label>
+        <select id="inputFacultyID" name="facultyID" class="form-control">
+            @{
+                <option selected>Choose a Faculty to list related Courses</option>
+                SISEntities db = new SISEntities();
+                foreach (var fact in db.Faculties.ToList())
+                {
+                    <option value="@fact.TableID">@fact.f_Name</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+
+<div class="card m-t-20">
+    <div class="card-body">
+        <div class="table" id="faculty">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Course Term</th>
+                        <th scope="col">Course ECTS</th>
+                        <th scope="col">Department</th>
+                        <th scope="colgroup">Operations</th>
+                    </tr>
+                </thead>
+                <tbody id="course_tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer m-t--10" align="right">
+        <a href="/Home/Index"><button type="button" class="btn btn-primary">Back to Previous Page</button></a>
+    </div>
+</div>
+
+@section Script{
+    <script>
+        $("#inputFacultyID").change(function () {
+            $("#course_tbody").empty();
+            var id = $(this).val();
+            $.ajax({
+                url: "/User/GetCourses/" + id,
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#course_tbody').append("<tr><td course_id='" + data[i].CourseID + "'>" + data[i].CourseName + "</td><td>" + data[i].CourseTerm + "</td><td>" + data[i].CourseECTS + "</td><td>" +
+                            data[i].DepName + "</td><td><a href='/Course/DeletingCourses/" + data[i].CourseID + "' > <i class='material-icons'>delete_sweep</i></a><a href='/Course/EditingCourses/" +
+                            data[i].CourseID + "'><i class='material-icons'>create</i></a></td></tr>");
+                    }
+                }
+            });
+        });
+    </script>
+}
+

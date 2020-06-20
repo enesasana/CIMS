@@ -1,0 +1,16 @@
+﻿<!--Home Index-->
+@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "Index";
+}
+
+@{ var name = ((Users)Session["LoggedUser"]).u_Name;}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" style="text-align:center">Dear @name welcome to the Information Management System</h1>
+    </div>
+</div>
+
+
+

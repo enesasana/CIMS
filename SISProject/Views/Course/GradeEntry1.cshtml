@@ -1,0 +1,73 @@
+﻿@using SISProject.Models.SISDB_Data;
+@{
+    ViewBag.Title = "GradeEntry1";
+}
+@model List<Students_Courses>
+
+<div class="card">
+    <div class="card m-t-20">
+        <div class="card-body">
+            <div class="table">
+                <table class="table table-dark">
+                    <thead class="header">
+                        <tr>
+                            <th scope="col">Student Number</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Faculty</th>
+                            <th scope="col">Midterm</th>
+                            <th scope="col">Final</th>
+                            <th scope="col">Resit</th>
+                            <th scope="col">Course GPA</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var std in Model)
+                            {
+                                SISEntities db = new SISEntities();
+                                var user_info = db.Students_Courses.Where(r => r.TableID == std.sc_Users_TableID).FirstOrDefault();
+                                {
+                                    <tr>
+                                        <td>@user_info.Users.u_Login_Number</td>
+                                        <td>@user_info.Users.u_Name</td>
+                                        <td>@user_info.Users.Deparments.d_Name</td>
+                                        <td>@user_info.Users.Deparments.Faculties.f_Name</td>
+                                        <td><input class="midterm" required value=@std.sc_Midterm_Grade /> </td>
+                                        <td><input class="final" required value=@std.sc_Final_Grade /> </td>
+                                        <td><input class="resit" required value=@std.sc_Resit_Grade /> </td>
+                                        <td class="gpa">@std.sc_Grade </td>
+                                        <td><button class="btnSave" t_id=@std.TableID><i class="material-icons orange600">save</i></button></td>
+                                    </tr>
+                                }
+                            }
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer m-t--25" align="right">
+        <a href="/Course/GradeEntry"><button type="button" class="btn btn-danger">Back to Previous Page</button></a>
+    </div>
+
+</div>
+
+@section Script {
+    <script>
+        $(".btnSave").click(function () {
+            var midterm = $(".btnSave").closest("tr").find(".midterm").val();
+            var final = $(".btnSave").closest("tr").find(".final").val();
+            var resit = $(".btnSave").closest("tr").find(".resit").val();
+            var gpa = $(".btnSave").closest("tr").find(".gpa").val();
+            var id = $(this).attr("t_id");
+            window.location.href = "/Course/SetNotes?id=" + id + "&midterm=" + midterm + "&final=" + final + "&resit=" + resit;
+        });
+    </script>
+}
+
+
